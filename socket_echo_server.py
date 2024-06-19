@@ -1,6 +1,10 @@
 import socket
 import sys
 
+def hex_to_string(hex_str):
+## convert hex string to binary data -> binary data to string
+    return binascii.unhexlify(hex_str).decode('utf-8')
+
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -22,7 +26,16 @@ while True:
     connection, client_address = sock.accept()
 
 
-##accept() returns an open connection between the server and client, along with the address of the client. The connection is actually a different socket on another port (assigned by the kernel). Data is read from the connection with recv() and transmitted with sendall().
+##accept() 
+# returns an open connection between the 
+# server and client, along with the address 
+# of the client. The connection is actually a 
+# different socket on another port (assigned by the 
+# kernel). Data is read from the connection with recv() and 
+# transmitted with sendall().
+
+
+
 
     try:
         print  ('connection from ', client_address)
@@ -34,6 +47,9 @@ while True:
             data = connection.recv(100)
             print ('received :' , data)
             if data:
+                hex_data = data.decode('utf-8')
+                received_string = hex_to_string(hex_data)
+                print ('received string: ', received_string)
                 print ('sending data back to the client')
                 connection.sendall(data)
             else:

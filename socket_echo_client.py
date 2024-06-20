@@ -26,13 +26,7 @@ def onesComplement(hexValue:str):
     complement = hex(complement)[2:].zfill(4)
     return complement
 
-try:
-    # Send data
-    # message = b'This is a massage from hamzah.  It will be repeated.'
-    # you can enter the massage from keyboard this way. instead of the fixed massage above
-    value = input("Please enter the message you want to be echoed:\n")
-    message = value.encode('utf-8').hex() #message is encoded to ASCII/hex
-
+def encodeMessage(message:str):
     version = "4"
     headerLen = "5"
     typeOfService = "00"
@@ -91,22 +85,25 @@ try:
     #if the packet length is NOT divisible by 8, we need to pad with trailing zeroes so that the entire packet is divisible by 8
     if len(packet) % 8 != 0:
         packet = packet.ljust(len(packet) + (8 - len(packet) % 8), "0")
-    
-    # #testing!!!
-    # words = [] #stores each 4-byte word in the header
-    # for i in range(0, len(packet), 4):
-    #     words.append(packet[i:i + 4])
-
-    # print(words)
 
     packet = packet.encode('utf-8')
+    return packet
 
-    print( 'sending : ' ,  packet)
-    Client_socket.sendall(packet)
+try:
+    # Send data
+    # message = b'This is a massage from hamzah.  It will be repeated.'
+    # you can enter the massage from keyboard this way. instead of the fixed massage above
+    value = input("Please enter the message you want to be echoed:\n")
+    message = value.encode('utf-8').hex() #message is encoded to ASCII/hex
+
+    message = encodeMessage(message)
+
+    print( 'sending : ' ,  message)
+    Client_socket.sendall(message)
 
     # Look for the response
     amount_received = 0
-    amount_expected = len(packet)
+    amount_expected = len(message)
     
     # here we choose the size of the buffer e.g. 100 
     while amount_received < amount_expected:

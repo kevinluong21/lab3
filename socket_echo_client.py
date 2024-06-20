@@ -1,5 +1,6 @@
 import socket
 import sys
+import random
 
 # # Create a TCP/IP socket
 Client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -42,7 +43,11 @@ try:
     totalLen = hex(int(totalLen))[2:]
     totalLen = totalLen.zfill(4)
 
-    identification = "1c46" #NOTE: must be auto-generated to be unique to each packet
+    # identification = "1c46" #NOTE: must be auto-generated to be unique to each packet
+    #randomly generate an ID for each packet (any value from 0 to 65535 in hex)
+    identification = random.randint(0, 65535)
+    identification = hex(identification)[2:]
+    identification = identification.zfill(4)
 
     flags = "40"
     fragmentOffset = "00"
@@ -51,11 +56,11 @@ try:
     protocol = "06"
 
     sourceIP = socket.gethostbyname(socket.gethostname())
-    sourceIP = "192.168.0.3"
+    # sourceIP = "192.168.0.3" #testing!!!
     sourceIP = encodeIPtoHex(sourceIP)
 
     serverIP = socket.gethostbyname("localhost")
-    serverIP = "192.168.0.1"
+    # serverIP = "192.168.0.1" #testing!!!
     serverIP = encodeIPtoHex(serverIP)
 
     temp = version + headerLen + typeOfService + totalLen + identification + flags + fragmentOffset + timeToLive + protocol + sourceIP + serverIP
@@ -88,11 +93,11 @@ try:
         packet = packet.ljust(len(packet) + (4 - len(packet) % 4), "0")
     
     #testing!!!
-    # words = [] #stores each 4-byte word in the header
-    # for i in range(0, len(packet), 4):
-    #     words.append(packet[i:i + 4])
+    words = [] #stores each 4-byte word in the header
+    for i in range(0, len(packet), 4):
+        words.append(packet[i:i + 4])
 
-    # print(words)
+    print(words)
 
     # print( 'sending : ' ,  message)
     # Client_socket.sendall(message)

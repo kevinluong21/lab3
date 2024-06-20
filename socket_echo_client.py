@@ -6,9 +6,9 @@ import random
 Client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Connect the socket to the port where the server is listening
-# server_address = ('localhost', 10800)
-# print ('connecting to ', server_address)
-# Client_socket.connect(server_address)
+server_address = ('localhost', 10800)
+print ('connecting to ', server_address)
+Client_socket.connect(server_address)
 
 ##After the connection is established, data can be sent through the socket with sendall() and received with recv(), just as in the server.
 
@@ -99,21 +99,21 @@ try:
 
     # print(words)
 
-    # print( 'sending : ' ,  message)
-    # Client_socket.sendall(message)
+    packet = packet.encode('utf-8')
+
+    print( 'sending : ' ,  packet)
+    Client_socket.sendall(packet)
 
     # Look for the response
     amount_received = 0
-    amount_expected = len(message)
-    
-    
+    amount_expected = len(packet)
     
     # here we choose the size of the buffer e.g. 100 
-    # while amount_received < amount_expected:
-    #     data = Client_socket.recv(100)
-    #     amount_received += len(data)
-    #     print ('received :' , data) 
+    while amount_received < amount_expected:
+        data = Client_socket.recv(100)
+        amount_received += len(data)
+        print ('received :' , data) 
 
 finally:
     print('closing socket')
-    # Client_socket.close()
+    Client_socket.close()

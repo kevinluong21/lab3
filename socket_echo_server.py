@@ -1,5 +1,6 @@
 import socket
 import sys
+import binascii
 
 def hex_to_string(hex_str):
 ## convert hex string to binary data -> binary data to string

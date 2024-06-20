@@ -88,9 +88,9 @@ try:
 
     packet = version + headerLen + typeOfService + totalLen + identification + flags + fragmentOffset + timeToLive + protocol + checksum + sourceIP + serverIP + message
 
-    #if the packet length is NOT divisible by 4, we need to pad with trailing zeroes so that the entire packet is divisible by 4
-    if len(packet) % 4 != 0:
-        packet = packet.ljust(len(packet) + (4 - len(packet) % 4), "0")
+    #if the packet length is NOT divisible by 8, we need to pad with trailing zeroes so that the entire packet is divisible by 8
+    if len(packet) % 8 != 0:
+        packet = packet.ljust(len(packet) + (8 - len(packet) % 8), "0")
     
     # #testing!!!
     # words = [] #stores each 4-byte word in the header

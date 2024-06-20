@@ -2,10 +2,10 @@ import socket
 import sys
 import random
 
-# # Create a TCP/IP socket
+# Create a TCP/IP socket
 Client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# # Connect the socket to the port where the server is listening
+# Connect the socket to the port where the server is listening
 # server_address = ('localhost', 10800)
 # print ('connecting to ', server_address)
 # Client_socket.connect(server_address)
@@ -86,18 +86,18 @@ try:
 
     checksum = onesComplement(total)
 
-    packet = version + headerLen + typeOfService + totalLen + identification + flags + fragmentOffset + timeToLive + protocol + checksum + sourceIP + serverIP + message + "00"
+    packet = version + headerLen + typeOfService + totalLen + identification + flags + fragmentOffset + timeToLive + protocol + checksum + sourceIP + serverIP + message
 
     #if the packet length is NOT divisible by 4, we need to pad with trailing zeroes so that the entire packet is divisible by 4
     if len(packet) % 4 != 0:
         packet = packet.ljust(len(packet) + (4 - len(packet) % 4), "0")
     
-    #testing!!!
-    words = [] #stores each 4-byte word in the header
-    for i in range(0, len(packet), 4):
-        words.append(packet[i:i + 4])
+    # #testing!!!
+    # words = [] #stores each 4-byte word in the header
+    # for i in range(0, len(packet), 4):
+    #     words.append(packet[i:i + 4])
 
-    print(words)
+    # print(words)
 
     # print( 'sending : ' ,  message)
     # Client_socket.sendall(message)

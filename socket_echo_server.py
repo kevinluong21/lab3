@@ -73,7 +73,7 @@ def decodeMessage(message:str) -> str:
     destinationIP = encodeHextoIP("".join(words[8:10]))
     received_checksum = words[5]
     message = "".join(words[10:])  
-    
+    totalLen = words[1]
 
     total = 0
     for word in words[:10]:
@@ -103,21 +103,27 @@ def decodeMessage(message:str) -> str:
     
 
 while True:
-    print ('waiting for a connection')
+    print('waiting for a connection')
     connection, client_address = sock.accept()
     try:
         print("Connection from ", client_address)
         received_packet = ""
-        # print("checkpoint 1")
+
+        connection.settimeout(5.0)  # Set socket timeout to 5 seconds
+
         while True:
-            data = connection.recv(1024)
-            # print("checkpoint 2")
-            if data:
-                print ('received :', data)
-                received_packet += data.decode('utf-8')
-            else:
-                print ('no more data from', client_address)
+            try:
+                data = connection.recv(1024)
+                if data:
+                    print('received:', data)
+                    received_packet += data.decode('utf-8')
+                else:
+                    print('no more data from', client_address)
+                    break
+            except socket.timeout:
+                print('no data received within the timeout period')
                 break
+
         response = decodeMessage(received_packet)
         connection.sendall(response.encode('utf-8'))
     finally:

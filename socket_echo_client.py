@@ -107,7 +107,7 @@ try:
     
     # here we choose the size of the buffer e.g. 100 
     while amount_received < amount_expected:
-        data = Client_socket.recv(100)
+        data = Client_socket.recv(1024)
         amount_received += len(data)
         print ('received :' , data) 
 

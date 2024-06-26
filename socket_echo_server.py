@@ -101,33 +101,66 @@ def decodeMessage(message:str) -> str:
         print(output)
         return output   
     
+connection_open = True
 
-while True:
+while connection_open:
     print('waiting for a connection')
     connection, client_address = sock.accept()
-    try:
-        print("Connection from ", client_address)
-        received_packet = ""
+    print("Connection from ", client_address)
+    received_packet = ""
 
-        connection.settimeout(5.0)  # Set socket timeout to 5 seconds
+    while True:
+        try:
+            # connection.settimeout(5.0)  # Set socket timeout to 5 seconds
+            connection.setblocking(0) #change the socket to non-blocking so that connection.recv() does not block
+            #the program while waiting for data
 
-        while True:
-            try:
-                data = connection.recv(1024)
-                if data:
-                    print('received:', data)
-                    received_packet += data.decode('utf-8')
-                else:
-                    print('no more data from', client_address)
-                    break
-            except socket.timeout:
-                print('no data received within the timeout period')
-                break
+            data = connection.recv(1024) #if buffer is empty, an error is thrown
 
-        response = decodeMessage(received_packet)
-        connection.sendall(response.encode('utf-8'))
-    finally:
-        connection.close()
+            print('received:', data)
+            received_packet += data.decode('utf-8')
+
+            response = decodeMessage(received_packet)
+            connection.sendall(response.encode('utf-8'))
+        except:
+            #if packets are received, and an error is thrown that means that no more data is being transmitted
+            if received_packet:
+                print ('no more data from', client_address)
+                connection_open = False #close the connection by ending the outer loop
+                break #end the loop once there is no more data
+            #no data received yet, so continue waiting for data to arrive
+            else:
+                continue
+
+print("closing connection")
+connection.close()
+
+# while True:
+#     print('waiting for a connection')
+#     connection, client_address = sock.accept()
+#     try:
+#         print("Connection from ", client_address)
+#         received_packet = ""
+
+#         connection.settimeout(5.0)  # Set socket timeout to 5 seconds
+
+#         while True:
+#             try:
+#                 data = connection.recv(1024)
+#                 if data:
+#                     print('received:', data)
+#                     received_packet += data.decode('utf-8')
+#                 else:
+#                     print('no more data from', client_address)
+#                     break
+#             except socket.timeout:
+#                 print('no data received within the timeout period')
+#                 break
+
+#         response = decodeMessage(received_packet)
+#         connection.sendall(response.encode('utf-8'))
+#     finally:
+#         connection.close()
 
 
 

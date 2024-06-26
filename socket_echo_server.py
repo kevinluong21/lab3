@@ -90,11 +90,14 @@ def decodeMessage(message:str) -> str:
     checking_checksum = onesComplement(total)
 
     if(checking_checksum == "0000"):
-        output = (f"The data received from {sourceIP} is: {hexToString(message)}\n"
-                  f"The data has {len(message) * 4} bits or {len(message) // 2} bytes.\n"
-                  f"The total length of the packet is {int(totalLen, 16)} bytes.\n"
-                  "The verification of the checksum demonstrates that the packet received is correct.")
-        print(output)
+        server_output = (f"The data received from {sourceIP} is: {hexToString(message)} " + "\n" +
+                     f"The data has {len(message) * 4} bits or {len(message) // 2} bytes.\n"
+                     f"The total length of the packet is {int(totalLen, 16)} bytes.\n"
+                     "The verification of the checksum demonstrates that the packet received is correct.")
+        client_output = (
+                     "The verification of the checksum demonstrates that the packet received is correct.")
+        print(server_output)  
+        return client_output
         return output
     else:
         output = "The verification of the checksum demonstrates that the packet received is corrupted. Packet discarded."
@@ -119,9 +122,13 @@ while connection_open:
 
             print('received:', data)
             received_packet += data.decode('utf-8')
-
+            
             response = decodeMessage(received_packet)
             connection.sendall(response.encode('utf-8'))
+            
+
+            
+
         except:
             #if packets are received, and an error is thrown that means that no more data is being transmitted
             if received_packet:

@@ -103,7 +103,7 @@ try:
 
     # Look for the response
     amount_received = 0
-    amount_expected = len(message)
+    amount_expected = len(value) #the length of the original message (the user input)
     
     # here we choose the size of the buffer e.g. 100 
     while amount_received < amount_expected:

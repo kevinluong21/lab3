@@ -1,3 +1,8 @@
+# Group 21
+# Algo Woolf (300267107)
+# Kevin Luong (300232125)
+# Nalan Kurnaz (300245521)
+
 import socket
 import sys
 import random
@@ -37,7 +42,6 @@ def encodeMessage(message:str):
     totalLen = hex(int(totalLen))[2:]
     totalLen = totalLen.zfill(4)
 
-    # identification = "1c46" #NOTE: must be auto-generated to be unique to each packet
     #randomly generate an ID for each packet (any value from 0 to 65535 in hex)
     identification = random.randint(0, 65535)
     identification = hex(identification)[2:]
@@ -50,11 +54,9 @@ def encodeMessage(message:str):
     protocol = "06"
 
     sourceIP = socket.gethostbyname(socket.gethostname())
-    # sourceIP = "192.168.0.3" #testing!!!
     sourceIP = encodeIPtoHex(sourceIP)
 
     serverIP = socket.gethostbyname("localhost")
-    # serverIP = "192.168.0.1" #testing!!!
     serverIP = encodeIPtoHex(serverIP)
 
     temp = version + headerLen + typeOfService + totalLen + identification + flags + fragmentOffset + timeToLive + protocol + sourceIP + serverIP

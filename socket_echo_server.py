@@ -1,10 +1,10 @@
+# Group 21
+# Algo Woolf (300267107)
+# Kevin Luong (300232125)
+# Nalan Kurnaz (300245521)
+
 import socket
 import sys
-import binascii
-
-# def hex_to_string(hex_str):
-# ## convert hex string to binary data -> binary data to string
-#     return binascii.unhexlify(hex_str).decode('utf-8')
 
 # Create a TCP/IP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -113,7 +113,6 @@ while connection_open:
 
     while True:
         try:
-            # connection.settimeout(5.0)  # Set socket timeout to 5 seconds
             connection.setblocking(0) #change the socket to non-blocking so that connection.recv() does not block
             #the program while waiting for data
 
